@@ -11,16 +11,16 @@ import java.util.*;
  *
  * <p>Использует стек для вычислений:</p>
  * <ul>
- *     <li>Числа помещаются в стек</li>
- *     <li>При встрече оператора извлекаются два значения</li>
- *     <li>Результат операции возвращается обратно в стек</li>
+ * <li>Числа помещаются в стек</li>
+ * <li>При встрече оператора извлекаются два значения</li>
+ * <li>Результат операции возвращается обратно в стек</li>
  * </ul>
  *
  * <p>Поддерживает:</p>
  * <ul>
- *     <li>Операции: +, -, *, /</li>
- *     <li>Переменные</li>
- *     <li>Функции: sin, cos, log, sqrt</li>
+ * <li>Операции: +, -, *, /, ^</li>
+ * <li>Переменные</li>
+ * <li>Функции: sin, cos, tan, log, sqrt, abs</li>
  * </ul>
  */
 public class Evaluator {
@@ -68,6 +68,7 @@ public class Evaluator {
                             }
                             yield a / b;
                         }
+                        case "^" -> Math.pow(a, b);
                         default -> throw new RuntimeException("Ошибка оператора: " + token.getValue());
                     });
                 }
@@ -95,8 +96,10 @@ public class Evaluator {
         return switch (func) {
             case "sin" -> Math.sin(x);
             case "cos" -> Math.cos(x);
+            case "tan" -> Math.tan(x);
             case "log" -> Math.log(x);
             case "sqrt" -> Math.sqrt(x);
+            case "abs" -> Math.abs(x);
             default -> throw new RuntimeException("Неизвестная функция: " + func);
         };
     }

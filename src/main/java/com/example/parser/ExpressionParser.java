@@ -13,10 +13,10 @@ import java.util.*;
  *
  * <p>Поддерживает:</p>
  * <ul>
- *     <li>Арифметические операции: +, -, *, /</li>
- *     <li>Скобки</li>
- *     <li>Переменные (x, y и т.д.)</li>
- *     <li>Функции: sin, cos, log, sqrt</li>
+ * <li>Арифметические операции: +, -, *, /, ^</li>
+ * <li>Скобки</li>
+ * <li>Переменные (x, y и т.д.)</li>
+ * <li>Функции: sin, cos, tan, log, sqrt, abs</li>
  * </ul>
  */
 public class ExpressionParser {
@@ -28,7 +28,8 @@ public class ExpressionParser {
             "+", 1,
             "-", 1,
             "*", 2,
-            "/", 2
+            "/", 2,
+            "^", 3
     );
 
     /**
@@ -108,7 +109,6 @@ public class ExpressionParser {
                 continue;
             }
 
-            // Числа (включая дробные)
             if (Character.isDigit(ch) || ch == '.') {
                 StringBuilder sb = new StringBuilder();
                 while (i < expr.length() &&
@@ -119,7 +119,6 @@ public class ExpressionParser {
                 continue;
             }
 
-            // Переменные или функции
             if (Character.isLetter(ch)) {
                 StringBuilder sb = new StringBuilder();
                 while (i < expr.length() && Character.isLetter(expr.charAt(i))) {
@@ -136,9 +135,8 @@ public class ExpressionParser {
                 continue;
             }
 
-            // Операторы и скобки
             switch (ch) {
-                case '+', '-', '*', '/' ->
+                case '+', '-', '*', '/', '^' ->
                         tokens.add(new Token(TokenType.OPERATOR, String.valueOf(ch)));
                 case '(' ->
                         tokens.add(new Token(TokenType.LEFT_PAREN, "("));
@@ -158,9 +156,9 @@ public class ExpressionParser {
      * Проверяет, является ли строка именем функции.
      *
      * @param s строка
-     * @return true, если это функция (sin, cos, log, sqrt)
+     * @return true, если это функция
      */
     private static boolean isFunction(String s) {
-        return Set.of("sin", "cos", "log", "sqrt").contains(s);
+        return Set.of("sin", "cos", "tan", "log", "sqrt", "abs").contains(s);
     }
 }
