@@ -1,4 +1,10 @@
-package com.example.parser;
+package com.example.calculator.parser;
 
-public class TokenType {
+public enum TokenType {
+    NUMBER,
+    OPERATOR,
+    VARIABLE,
+    FUNCTION,
+    LEFT_PAREN,
+    RIGHT_PAREN
 }

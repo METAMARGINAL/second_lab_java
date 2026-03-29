@@ -1,17 +1,38 @@
-package com.example;
+package com.example.calculator;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import com.example.calculator.evaluator.Evaluator;
+import com.example.calculator.parser.ExpressionParser;
+import com.example.calculator.parser.Token;
+
+import java.util.*;
+
 public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите выражение: ");
+        String input = scanner.nextLine();
+
+        try {
+            List<Token> rpn = ExpressionParser.toRPN(input);
+
+            Map<String, Double> variables = new HashMap<>();
+
+            for (Token t : rpn) {
+                if (t.getType().name().equals("VARIABLE")) {
+                    if (!variables.containsKey(t.getValue())) {
+                        System.out.print("Введите значение " + t.getValue() + ": ");
+                        variables.put(t.getValue(), scanner.nextDouble());
+                    }
+                }
+            }
+
+            double result = Evaluator.evaluate(rpn, variables);
+            System.out.println("Результат: " + result);
+
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
     }
 }
