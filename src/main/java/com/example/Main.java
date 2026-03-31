@@ -15,6 +15,7 @@ import java.util.*;
  * <li>Инициализацию процесса парсинга в RPN</li>
  * <li>Сбор значений для всех уникальных переменных, встреченных в выражении</li>
  * <li>Вывод итогового результата вычислений или сообщения об ошибке</li>
+ *  * @see <a href="https://github.com/METAMARGINAL/second_lab_java"_blank">Репозиторий проекта на GitHub</a>
  * </ul>
  */
 public class Main {
