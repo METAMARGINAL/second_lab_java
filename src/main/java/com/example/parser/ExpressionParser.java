@@ -109,13 +109,20 @@ public class ExpressionParser {
                 continue;
             }
 
-            if (Character.isDigit(ch) || ch == '.') {
+            if (Character.isDigit(ch) || ch == '.' || (ch == '-' && isUnary(tokens))) {
                 StringBuilder sb = new StringBuilder();
+                sb.append(expr.charAt(i++));
                 while (i < expr.length() &&
                         (Character.isDigit(expr.charAt(i)) || expr.charAt(i) == '.')) {
                     sb.append(expr.charAt(i++));
                 }
-                tokens.add(new Token(TokenType.NUMBER, sb.toString()));
+
+                String val = sb.toString();
+                if (val.equals("-")) {
+                    tokens.add(new Token(TokenType.OPERATOR, "-"));
+                } else {
+                    tokens.add(new Token(TokenType.NUMBER, val));
+                }
                 continue;
             }
 
@@ -152,12 +159,12 @@ public class ExpressionParser {
         return tokens;
     }
 
-    /**
-     * Проверяет, является ли строка именем функции.
-     *
-     * @param s строка
-     * @return true, если это функция
-     */
+    private static boolean isUnary(List<Token> tokens) {
+        if (tokens.isEmpty()) return true;
+        TokenType lastType = tokens.get(tokens.size() - 1).getType();
+        return lastType == TokenType.LEFT_PAREN || lastType == TokenType.OPERATOR;
+    }
+
     private static boolean isFunction(String s) {
         return Set.of("sin", "cos", "tan", "log", "sqrt", "abs").contains(s);
     }

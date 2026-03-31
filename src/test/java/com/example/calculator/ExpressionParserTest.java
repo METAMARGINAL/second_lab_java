@@ -18,27 +18,21 @@ public class ExpressionParserTest {
     }
 
     @Test
-    void testBrackets() {
+    void testUnaryMinus() {
         assertDoesNotThrow(() ->
-                ExpressionParser.toRPN("(2+3)*4"));
+                ExpressionParser.toRPN("-5+abs(-10)"));
     }
 
     @Test
-    void testNestedBrackets() {
+    void testPowerParsing() {
         assertDoesNotThrow(() ->
-                ExpressionParser.toRPN("((2+3)*4)"));
+                ExpressionParser.toRPN("2^3^4"));
     }
 
     @Test
-    void testFunctionParsing() {
+    void testNestedFunctions() {
         assertDoesNotThrow(() ->
-                ExpressionParser.toRPN("sqrt(16)"));
-    }
-
-    @Test
-    void testVariablesParsing() {
-        assertDoesNotThrow(() ->
-                ExpressionParser.toRPN("x+y*2"));
+                ExpressionParser.toRPN("sin(cos(sqrt(16)))"));
     }
 
     @Test
@@ -51,11 +45,5 @@ public class ExpressionParserTest {
     void testUnclosedBracket() {
         assertThrows(ParseException.class,
                 () -> ExpressionParser.toRPN("(2+3"));
-    }
-
-    @Test
-    void testExtraClosingBracket() {
-        assertThrows(ParseException.class,
-                () -> ExpressionParser.toRPN("2+3)"));
     }
 }

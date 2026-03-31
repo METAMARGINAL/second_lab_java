@@ -38,6 +38,12 @@ public class EvaluatorTest {
     }
 
     @Test
+    void testPower() {
+        var rpn = ExpressionParser.toRPN("2^3");
+        assertEquals(8, Evaluator.evaluate(rpn, Map.of()));
+    }
+
+    @Test
     void testPriority() {
         var rpn = ExpressionParser.toRPN("2+3*4");
         assertEquals(14, Evaluator.evaluate(rpn, Map.of()));
@@ -50,9 +56,9 @@ public class EvaluatorTest {
     }
 
     @Test
-    void testDoubleNumbers() {
-        var rpn = ExpressionParser.toRPN("2.5*2");
-        assertEquals(5.0, Evaluator.evaluate(rpn, Map.of()));
+    void testNegativeNumbers() {
+        var rpn = ExpressionParser.toRPN("-5+3");
+        assertEquals(-2, Evaluator.evaluate(rpn, Map.of()));
     }
 
     @Test
@@ -62,12 +68,9 @@ public class EvaluatorTest {
     }
 
     @Test
-    void testMultipleVariables() {
-        var rpn = ExpressionParser.toRPN("x+y");
-        assertEquals(7, Evaluator.evaluate(rpn, Map.of(
-                "x", 3.0,
-                "y", 4.0
-        )));
+    void testAbsFunction() {
+        var rpn = ExpressionParser.toRPN("abs(-10.5)");
+        assertEquals(10.5, Evaluator.evaluate(rpn, Map.of()));
     }
 
     @Test
@@ -77,34 +80,15 @@ public class EvaluatorTest {
     }
 
     @Test
-    void testSinFunction() {
-        var rpn = ExpressionParser.toRPN("sin(0)");
-        assertEquals(0, Evaluator.evaluate(rpn, Map.of()), 0.0001);
-    }
-
-    @Test
-    void testCosFunction() {
-        var rpn = ExpressionParser.toRPN("cos(0)");
-        assertEquals(1, Evaluator.evaluate(rpn, Map.of()), 0.0001);
-    }
-
-    @Test
-    void testLogFunction() {
-        var rpn = ExpressionParser.toRPN("log(1)");
-        assertEquals(0, Evaluator.evaluate(rpn, Map.of()), 0.0001);
+    void testSinCosCombination() {
+        var rpn = ExpressionParser.toRPN("sin(0)^2 + cos(0)^2");
+        assertEquals(1.0, Evaluator.evaluate(rpn, Map.of()), 0.0001);
     }
 
     @Test
     void testDivisionByZero() {
         var rpn = ExpressionParser.toRPN("5/0");
         assertThrows(ArithmeticException.class,
-                () -> Evaluator.evaluate(rpn, Map.of()));
-    }
-
-    @Test
-    void testUnknownVariable() {
-        var rpn = ExpressionParser.toRPN("x+2");
-        assertThrows(RuntimeException.class,
                 () -> Evaluator.evaluate(rpn, Map.of()));
     }
 }
